@@ -1,42 +1,86 @@
+* {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.board {
+  height: 50vh;
+  display: grid;
+  grid-template-columns: repeat(var(--columnNumber), 1fr);
+  aspect-ratio: var(--columnNumber) / var(--rowNumber);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.square {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.square.fill-black::before {
+  content: '';
+  position: absolute;
+  margin: 5%;
+  width: 90%;
+  height: 90%;
+  background-color: cadetblue;
+  background-size: 100%;
+  border-radius: 50%;
+  animation: fill-animation 0.7s ease-in-out;
+}
+
+.square.fill-white::before {
+  content: '';
+  position: absolute;
+  margin: 5%;
+  width: 90%;
+  height: 90%;
+  background-color: tomato;
+  background-size: 100%;
+  border-radius: 50%;
+  animation: fill-animation 0.7s ease-in-out;
+}
+
+@keyframes fill-animation {
+  0% {
+    transform: translateY(-200px);
   }
-  to {
-    transform: rotate(360deg);
+  100% {
+    transform: translateY(0px);
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.square::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(transparent 60%, #171717 0);
+  background-size: 100%;
+  z-index: 10;
 }
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
+.piece {
+  outline: none;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  height: 100%;
+  z-index: 11;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0;
 }

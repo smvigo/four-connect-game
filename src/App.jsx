@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
+import './App.css'
 import {
   BOARD_SIZE,
   GAME_STATES,
   OVERSIZE_BOARD,
   WIN_NUMBER
 } from './config/game'
-import './App.css'
 
 function App() {
   const [board, setBoard] = useState(() =>
@@ -79,7 +79,67 @@ function App() {
     }
   }
 
-  return <></>
+  const turnPlayer = ({ row, column }) => {
+    const arrColumn = getColumn(column)
+
+    const squareToInsert = arrColumn.findLast(
+      square => square.fill_player === null
+    )
+
+    if (squareToInsert == null) return
+
+    const new_board = board.map(row =>
+      row.map(cell => {
+        return {
+          ...cell,
+          fill_player:
+            squareToInsert.column == cell.column &&
+            squareToInsert.row == cell.row
+              ? turn
+              : cell.fill_player
+        }
+      })
+    )
+
+    setBoard(new_board)
+    setTurn(turn == 0 ? 1 : 0)
+  }
+
+  const getClassNameByFillPlayer = fill_player => {
+    if (fill_player == 0) return 'fill-black'
+    if (fill_player == 1) return 'fill-white'
+    return ''
+  }
+
+  useEffect(() => {
+    console.table(board.map(row => row.map(c => c.fill_player)))
+  }, [board])
+
+  return (
+    <>
+      <div
+        style={{
+          '--columnNumber': BOARD_SIZE.columns,
+          '--rowNumber': BOARD_SIZE.rows
+        }}
+        className="board"
+      >
+        {board.flat().map(square => (
+          <div
+            key={square.id}
+            className={`square ${getClassNameByFillPlayer(square.fill_player)}`}
+          >
+            <button
+              onClick={() =>
+                turnPlayer({ row: square.row, column: square.column })
+              }
+              className="piece"
+            ></button>
+          </div>
+        ))}
+      </div>
+    </>
+  )
 }
 
 const getInitialBoardState = ({ columns, rows }) => {
@@ -91,10 +151,13 @@ const getInitialBoardState = ({ columns, rows }) => {
       initialBoard[currentRow].push({
         id: crypto.randomUUID(),
         fill_player: null,
-        animation: false
+        animation: false,
+        row: currentRow,
+        column: currentCol
       })
     }
   }
+  return initialBoard
 }
 
 const getCoordsToTraverseDiagonally = ({ rows, columns }) => {
