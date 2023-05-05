@@ -12,11 +12,11 @@ export const WIN_NUMBER = 4
 export const PLAYERS = [
   {
     default_name: 'player 1',
-    default_color: 'yellow'
+    default_color: 'blue'
   },
   {
     default_name: 'player 2',
-    default_color: 'pink'
+    default_color: 'red'
   }
 ]
 

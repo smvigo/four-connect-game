@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import Button from './components/Button'
+import Player from './components/Player'
 import {
   BOARD_SIZE,
   GAME_STATES,
   OVERSIZE_BOARD,
-  WIN_NUMBER
+  WIN_NUMBER,
+  PLAYERS
 } from './config/game'
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
   const [gameState, setGameState] = useState(GAME_STATES.PLAYABLE)
   const [turn, setTurn] = useState(0)
   const [winner, setWinner] = useState()
+  const [winCountPlayer1, setWinCountPlayer1] = useState(0)
+  const [winCountPlayer2, setWinCountPlayer2] = useState(0)
 
   const handleResetGame = () => {
     const initialBoardState = getInitialBoardState({
@@ -130,6 +134,12 @@ function App() {
 
   return (
     <>
+      <Button onClick={handleResetGame}>Restart</Button>
+      <Player
+        colorFace={PLAYERS[0].default_color}
+        name={PLAYERS[0].default_name}
+        counter={winCountPlayer1}
+      ></Player>
       <div
         style={{
           '--columnNumber': BOARD_SIZE.columns,
@@ -142,7 +152,6 @@ function App() {
             key={square.id}
             className={`square ${getClassNameByFillPlayer(square.fill_player)}`}
           >
-            <div className="circle"></div>
             <button
               onClick={() =>
                 turnPlayer({ row: square.row, column: square.column })
@@ -152,7 +161,11 @@ function App() {
           </div>
         ))}
       </div>
-      <Button onClick={handleResetGame}>Restart</Button>
+      <Player
+        colorFace={PLAYERS[1].default_color}
+        name={PLAYERS[1].default_name}
+        counter={winCountPlayer2}
+      ></Player>
     </>
   )
 }
