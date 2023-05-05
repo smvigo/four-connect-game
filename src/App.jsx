@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import Button from './components/Button'
 import {
   BOARD_SIZE,
   GAME_STATES,
@@ -18,6 +19,18 @@ function App() {
   const [gameState, setGameState] = useState(GAME_STATES.PLAYABLE)
   const [turn, setTurn] = useState(0)
   const [winner, setWinner] = useState()
+
+  const handleResetGame = () => {
+    const initialBoardState = getInitialBoardState({
+      columns: BOARD_SIZE.columns,
+      rows: BOARD_SIZE.rows
+    })
+
+    setBoard(initialBoardState)
+    setGameState(GAME_STATES.PLAYABLE)
+    setTurn(0)
+    setWinner()
+  }
 
   const isFullBoard = () => {
     return board.every(columns =>
@@ -129,6 +142,7 @@ function App() {
             key={square.id}
             className={`square ${getClassNameByFillPlayer(square.fill_player)}`}
           >
+            <div className="circle"></div>
             <button
               onClick={() =>
                 turnPlayer({ row: square.row, column: square.column })
@@ -138,6 +152,7 @@ function App() {
           </div>
         ))}
       </div>
+      <Button onClick={handleResetGame}>Restart</Button>
     </>
   )
 }
