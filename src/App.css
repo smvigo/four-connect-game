@@ -11,7 +11,7 @@
   height: 100vh;
   justify-content: center;
   align-items: center;
-  background: #7945ff;
+  background: #1F1F1F;
 }
 
 .board {
@@ -21,43 +21,63 @@
   aspect-ratio: var(--columnNumber) / var(--rowNumber);
   aspect-ratio: 7/6;
   position: relative;
-  border-radius: 30px;
-  box-sizing: content-box;
-  border: 0.5rem solid white;
-  border-bottom-width: 3rem;
-  outline: 0.5rem solid #000;
-  box-shadow: 0 0.5rem 0 0.5rem #000;
+  border-radius: 1rem;
   overflow: hidden;
+  background-color: #141414;
+  border: 1rem solid #282828;
+  z-index: 10;
 }
 
-.square {
-  width: 100%;
-  height: 100%;
+.square-container {
   position: relative;
 }
 
-.square.fill-black::before {
-  content: '';
+.square-container > .circle-bottom-border {
   position: absolute;
-  margin: 5%;
-  width: 90%;
-  height: 90%;
-  background-color: cadetblue;
   background-size: 100%;
-  border-radius: 50%;
-  animation: fill-animation 0.7s ease-in-out;
+  background-image: url('square/bottom-border.svg');
+  width: 100%;
+  height: 100%;
 }
 
-.square.fill-white::before {
+.square-container > .circle-ring {
+  position: absolute;
+  background-size: 100%;
+  background-image: url('square/ring.svg');
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+}
+
+.square-container > .square-background {
+  position: absolute;
+  background-size: 100%;
+  background-image: url('square/background.svg');
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.piece-container.fill-black {
   content: '';
   position: absolute;
-  margin: 5%;
-  width: 90%;
-  height: 90%;
-  background-color: tomato;
+  width: 100%;
+  height: 100%;
+  background: url('pieces/yellow.svg');
   background-size: 100%;
-  border-radius: 50%;
-  animation: fill-animation 0.7s ease-in-out;
+  animation: fill-animation .7s ease-in-out;
+  z-index: 98;
+}
+
+.piece-container.fill-white {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('pieces/red.svg');
+  background-size: 100%;
+  animation: fill-animation .7s ease-in-out;
+  z-index: 98;
 }
 
 @keyframes fill-animation {
@@ -69,29 +89,35 @@
   }
 }
 
-.square::after {
-  content: '';
-  display: block;
+.footer {
   position: absolute;
+  height: 30vh;
+  width: 100vw;
+  bottom: 0;
   left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(transparent 60%, #171717 0);
-  background: url('circle.svg');
-  background-size: 100%;
-  z-index: 10;
+  z-index: 2;
+  background-color: #111111;
+  background-image: radial-gradient(190.7% 190.7% at 50.01% -143.72%, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
 }
 
-.piece {
-  outline: none;
-  background-color: transparent;
-  border: none;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
+.background-gradient {
   position: absolute;
-  top: 0;
+  height: 70vh;
+  width: 100vw;
+  bottom: 0;
   left: 0;
-  border-radius: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.background-gradient > .left-gradient {
+  flex: 1;
+  background: radial-gradient(50% 50% at 60% 60%, rgba(255, 225, 0, 0.25) 0%, rgba(217, 217, 217, 0) 100%);
+}
+
+.background-gradient > .right-gradient {
+  flex: 1;
+  background: radial-gradient(50% 50% at 40% 60%, rgba(255, 0, 25, 0.25) 0%, rgba(217, 217, 217, 0) 100%);
 }

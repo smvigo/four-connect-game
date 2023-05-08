@@ -148,19 +148,21 @@ function App() {
         className="board"
       >
         {board.flat().map(square => (
-          <div
-            key={square.id}
-            className={`square ${getClassNameByFillPlayer(square.fill_player)}`}
-          >
-            <button
-              onClick={() =>
-                turnPlayer({ row: square.row, column: square.column })
-              }
-              className="piece"
-            ></button>
+          <div key={square.id} className='square-container'>
+            <div className='circle-bottom-border'></div>
+            <div className={`piece-container ${getClassNameByFillPlayer(square.fill_player)}`}></div>
+            <div className='circle-ring'></div>
+            <div className='square-background' onClick={() =>
+              turnPlayer({ row: square.row, column: square.column })
+            }></div>
           </div>
         ))}
       </div>
+      <div className='background-gradient'>
+        <div className='left-gradient'></div>
+        <div className='right-gradient'></div>
+      </div>
+      <div className='footer'></div>
       <Player
         colorFace={PLAYERS[1].default_color}
         name={PLAYERS[1].default_name}
