@@ -6,11 +6,7 @@ const Player = ({ counter, name, colorFace }) => {
   return (
     <>
       <div className={style.container}>
-        <FaceSad
-          className={style.icon}
-          strokeWidth={1}
-          style={{ backgroundColor: colorFace }}
-        />
+        <div className={style.profileImage}></div>
         <p className={style.name}>{name}</p>
         <span className={style.counter}>{counter}</span>
       </div>

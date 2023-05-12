@@ -4,7 +4,7 @@ import {
   GAME_STATES,
   OVERSIZE_BOARD,
   WIN_NUMBER
-} from './config/game'
+} from '../config/game'
 
 const useBoard = () => {
   const [game, setGame] = useState(() => resetGameState())
@@ -55,6 +55,51 @@ const useBoard = () => {
   }
 }
 
+const getCoordsToTraverseDiagonally = ({ rows, columns }) => {
+  const coordsTopLeftToBottomRight = Array(rows + columns - 1)
+  const coordsTopRightToBottomLeft = Array(rows + columns - 1)
+
+  for (let i = 0; i < rows + columns - 1; i++) {
+    coordsTopLeftToBottomRight[i] = []
+    coordsTopRightToBottomLeft[i] = []
+
+    for (let j = 0; j < rows + columns - 1; j++) {
+      const k = i - j
+      if (k >= 0 && k < rows && j < columns) {
+        coordsTopLeftToBottomRight[i].push({ row: k, column: j })
+      }
+      if (k >= 0 && k < rows && columns - j > 0) {
+        coordsTopRightToBottomLeft[i].push({ row: k, column: columns - j - 1 })
+      }
+    }
+  }
+
+  return {
+    TopLeftToBottomRight: coordsTopLeftToBottomRight,
+    TopRightToBottomLeft: coordsTopRightToBottomLeft
+  }
+}
+
+const getCoordsToTraverseLinearly = ({ rows, columns }) => {
+  const coordsLeftToRight = []
+
+  for (let i = 0; i < rows; i++) {
+    coordsLeftToRight[i] = []
+    for (let j = 0; j < columns; j++) {
+      coordsLeftToRight[i][j] = { row: i, column: j }
+    }
+  }
+
+  const coordsTopToBottom = coordsLeftToRight[0].map((_, columnIndex) =>
+    coordsLeftToRight.map(row => row[columnIndex])
+  )
+
+  return {
+    LeftToRight: coordsLeftToRight,
+    TopToBottom: coordsTopToBottom
+  }
+}
+
 const TRAVERSE_COORDS = (() => {
   const { LeftToRight, TopToBottom } = getCoordsToTraverseLinearly({
     rows: 9,
@@ -63,12 +108,7 @@ const TRAVERSE_COORDS = (() => {
   const { TopLeftToBottomRight, TopRightToBottomLeft } =
     getCoordsToTraverseDiagonally({ rows: 9, columns: 6 })
 
-  return {
-    LeftToRight,
-    TopToBottom,
-    TopLeftToBottomRight,
-    TopRightToBottomLeft
-  }
+  return [LeftToRight, TopToBottom, TopLeftToBottomRight, TopRightToBottomLeft]
 })()
 
 const getCell = ({ column, row, game }) => {
@@ -188,51 +228,6 @@ const getInitialBoardState = ({ columns, rows }) => {
     }
   }
   return initialBoard
-}
-
-const getCoordsToTraverseDiagonally = ({ rows, columns }) => {
-  const coordsTopLeftToBottomRight = Array(rows + columns - 1)
-  const coordsTopRightToBottomLeft = Array(rows + columns - 1)
-
-  for (let i = 0; i < rows + columns - 1; i++) {
-    coordsTopLeftToBottomRight[i] = []
-    coordsTopRightToBottomLeft[i] = []
-
-    for (let j = 0; j < rows + columns - 1; j++) {
-      const k = i - j
-      if (k >= 0 && k < rows && j < columns) {
-        coordsTopLeftToBottomRight[i].push({ row: k, column: j })
-      }
-      if (k >= 0 && k < rows && columns - j > 0) {
-        coordsTopRightToBottomLeft[i].push({ row: k, column: columns - j - 1 })
-      }
-    }
-  }
-
-  return {
-    TopLeftToBottomRight: coordsTopLeftToBottomRight,
-    TopRightToBottomLeft: coordsTopRightToBottomLeft
-  }
-}
-
-const getCoordsToTraverseLinearly = ({ rows, columns }) => {
-  const coordsLeftToRight = []
-
-  for (let i = 0; i < rows; i++) {
-    coordsLeftToRight[i] = []
-    for (let j = 0; j < columns; j++) {
-      coordsLeftToRight[i][j] = { row: i, column: j }
-    }
-  }
-
-  const coordsTopToBottom = coordsLeftToRight[0].map((_, columnIndex) =>
-    coordsLeftToRight.map(row => row[columnIndex])
-  )
-
-  return {
-    LeftToRight: coordsLeftToRight,
-    TopToBottom: coordsTopToBottom
-  }
 }
 
 export default useBoard

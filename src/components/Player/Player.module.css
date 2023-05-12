@@ -1,4 +1,4 @@
-* {
+/* * {
   margin: 0;
   padding: 0;
   text-decoration: none;
@@ -19,4 +19,45 @@
   color: #000;
   overflow: hidden;
   border-radius: 50%;
+} */
+
+.container {
+  background-color: #282828;
+  z-index: 10;
+  width: 150px;
+  height: 180px;
+  position: relative;
+  border-radius: 1rem 1rem 0 0;
+  /* box-shadow: 0px 0px 2px rgba(255, 255, 255, 0.25); */
+  padding-top: 70px;
+  padding-bottom: 20px;
+  display: flex;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.profileImage {
+  position: absolute;
+  width: 100px;
+  background-color: #141414;
+  border: 10px solid #282828;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  left: 50%;
+  top: 0;
+  translate: -50% -50%;
+  box-shadow: 0px 1px 2px rgba(255, 255, 255, 0.25);
+}
+
+.name {
+  color: rgba(255, 255, 255, 0.65);
+  font-family: 'Patrick Hand', cursive;
+}
+
+.counter {
+  color: rgba(255, 255, 255, 0.85);
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 2rem;
 }

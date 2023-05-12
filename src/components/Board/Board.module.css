@@ -1,0 +1,73 @@
+.board {
+  height: 60vh;
+  display: grid;
+  grid-template-columns: repeat(var(--columnNumber), 1fr);
+  aspect-ratio: var(--columnNumber) / var(--rowNumber);
+  aspect-ratio: 7/6;
+  position: relative;
+  border-radius: 1rem;
+  overflow: hidden;
+  background-color: #141414;
+  border: 1rem solid #282828;
+}
+
+.square-container {
+  position: relative;
+}
+
+.square-container > .circle-bottom-border {
+  position: absolute;
+  background-size: 100%;
+  background-image: url('square/bottom-border.svg');
+  width: 100%;
+  height: 100%;
+}
+
+.square-container > .circle-ring {
+  position: absolute;
+  background-size: 100%;
+  background-image: url('square/ring.svg');
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+}
+
+.square-container > .square-background {
+  position: absolute;
+  background-size: 100%;
+  background-image: url('square/background.svg');
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.piece-container.fill-black {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('pieces/yellow.svg');
+  background-size: 100%;
+  animation: fill-animation 0.7s ease-in-out;
+  z-index: 98;
+}
+
+.piece-container.fill-white {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('pieces/red.svg');
+  background-size: 100%;
+  animation: fill-animation 0.7s ease-in-out;
+  z-index: 98;
+}
+
+@keyframes fill-animation {
+  0% {
+    transform: translateY(-60vh);
+  }
+  100% {
+    transform: translateY(-0vh);
+  }
+}
