@@ -1,13 +1,16 @@
 import './App.css'
+import Button from './components/Button'
 import Player from './components/Player'
 import { BOARD_SIZE, PLAYERS } from './config/game'
 import Board from './components/Board/Board'
 import useBoard from './hooks/useBoard'
-import { useModal } from './components/Modal/Modal'
+import Piece from './components/Piece'
+import Modal from './components/Modal'
+import { useState, useMemo, useEffect } from 'react'
 
 function App() {
-  const { PlayTurn, board, winCount, time } = useBoard()
-  const { openModalContent, contentModal } = useModal()
+  const { ResetGame, PlayTurn, board, state, turn, winCount, winner, time } =
+    useBoard()
 
   return (
     <div
@@ -19,9 +22,19 @@ function App() {
         '--playerOneColor': PLAYERS[1].default_color
       }}
     >
-      {contentModal}
+      <Modal />
       <div className="head">
-        <button onClick={openModalContent}>Open Modal</button>
+        <button
+          onClick={() => {
+            const customEvent = new CustomEvent('custom-modal', {
+              detail: <ContentModal />
+            })
+
+            document.dispatchEvent(customEvent)
+          }}
+        >
+          Open Modal
+        </button>
       </div>
       <div className="board-with-players">
         <Player
@@ -42,6 +55,32 @@ function App() {
       </div>
       <div className="footer"></div>
     </div>
+  )
+}
+
+const ContentModal = () => {
+  return (
+    <>
+      <p>
+        {`I'm a modal window, I don't use portals but use the dialog element
+    from the platform.`}
+      </p>
+      <p>
+        {`Also tabbing is locked inside me go ahead and try tabbing to the
+    button behind me.`}
+      </p>
+      <button
+        onClick={() => {
+          const customEvent = new CustomEvent('custom-modal', {
+            detail: undefined
+          })
+
+          document.dispatchEvent(customEvent)
+        }}
+      >
+        Close
+      </button>
+    </>
   )
 }
 
