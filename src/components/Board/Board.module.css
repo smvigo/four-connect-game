@@ -40,34 +40,3 @@
   height: 100%;
   z-index: 100;
 }
-
-.piece-container.fill-black {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: url('pieces/yellow.svg');
-  background-size: 100%;
-  animation: fill-animation 0.7s ease-in-out;
-  z-index: 98;
-}
-
-.piece-container.fill-white {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: url('pieces/red.svg');
-  background-size: 100%;
-  animation: fill-animation 0.7s ease-in-out;
-  z-index: 98;
-}
-
-@keyframes fill-animation {
-  0% {
-    transform: translateY(-60vh);
-  }
-  100% {
-    transform: translateY(-0vh);
-  }
-}

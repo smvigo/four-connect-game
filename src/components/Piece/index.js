@@ -1,2 +1,1 @@
-export { default } from './Piece';
-
+export { default } from './Piece'

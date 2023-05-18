@@ -1,6 +1,6 @@
 export const TIME_TURN = 30 * 1000
 
-export const OVERSIZE_BOARD = -1
+export const OVERSIZE_BOARD = Symbol()
 
 export const BOARD_SIZE = {
   columns: 7,
@@ -19,6 +19,9 @@ export const PLAYERS = [
     default_color: '255, 0, 26'
   }
 ]
+
+// default_color: '255, 224, 0'
+// default_color: '255, 0, 26'
 
 export const GAME_STATES = {
   UNPLAYABLE: Symbol(),

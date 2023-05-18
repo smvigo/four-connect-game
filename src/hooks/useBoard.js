@@ -3,21 +3,52 @@ import {
   BOARD_SIZE,
   GAME_STATES,
   OVERSIZE_BOARD,
-  WIN_NUMBER
+  WIN_NUMBER,
+  TIME_TURN
 } from '../config/game'
 
 const useBoard = () => {
   const [game, setGame] = useState(() => resetGameState())
 
-  useEffect(() => {
-    checkGameState(game, setGame)
-  }, [game.board])
+  useEffect(() => checkGameState(game, setGame), [game.board]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const ResetGame = () => {
-    setGame(resetGameState())
+  useEffect(() => {
+    const ivl_id = setInterval(() => {
+      if (game.pause) return
+      const newTime = [
+        game.time[0] - (game.turn == 0 ? 50 : 0),
+        game.time[1] - (game.turn == 1 ? 50 : 0)
+      ]
+      if (newTime[game.turn] === 0) {
+        const newWinCount = [
+          game.winCount[0] + (game.turn == 1 ? 1 : 0),
+          game.winCount[1] + (game.turn == 0 ? 1 : 0)
+        ]
+        return ResetGame({
+          turn: game.turn,
+          winCount: newWinCount,
+          pause: true
+        })
+      }
+      setGame(currentState => {
+        return {
+          ...currentState,
+          time: newTime
+        }
+      })
+    }, 50)
+    return () => {
+      clearInterval(ivl_id)
+    }
+  })
+
+  const ResetGame = ({ turn, winCount, pause }) => {
+    setGame(resetGameState(turn, winCount, pause))
   }
 
   const PlayTurn = column => {
+    if (game.pause) return
+
     const arrColumn = getColumn({ column, game })
 
     const squareToInsert = arrColumn.findLast(
@@ -43,7 +74,8 @@ const useBoard = () => {
       return {
         ...currentState,
         board: new_board,
-        turn: currentState.turn == 0 ? 1 : 0
+        turn: currentState.turn == 0 ? 1 : 0,
+        time: [TIME_TURN, TIME_TURN]
       }
     })
   }
@@ -164,27 +196,29 @@ const checkGameState = (game, setGame) => {
       game.winCount[1] + (winnerPlayer == 1 ? 1 : 0)
     ]
 
-    setGame(currentState => {
+    return setGame(currentState => {
       return {
         ...currentState,
         state: GAME_STATES.PLAYER_WIN,
         winCount: newWinCount,
-        winner: winnerPlayer
+        winner: winnerPlayer,
+        pause: true
       }
     })
   }
 
   if (isFullBoard(game)) {
-    setGame(currentState => {
+    return setGame(currentState => {
       return {
         ...currentState,
-        state: GAME_STATES.UNPLAYABLE
+        state: GAME_STATES.UNPLAYABLE,
+        pause: true
       }
     })
   }
 }
 
-const resetGameState = (turn = 0, winCount = [0, 0]) => {
+const resetGameState = (turn = 0, winCount = [0, 0], pause = true) => {
   const boardState = getInitialBoardState({
     columns: BOARD_SIZE.columns,
     rows: BOARD_SIZE.rows
@@ -194,7 +228,9 @@ const resetGameState = (turn = 0, winCount = [0, 0]) => {
     state: GAME_STATES.PLAYABLE,
     turn,
     winCount,
-    winner: null
+    time: [TIME_TURN, TIME_TURN],
+    winner: null,
+    pause
   }
 }
 

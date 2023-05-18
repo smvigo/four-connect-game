@@ -1,22 +1,17 @@
 import style from './Board.module.css'
+import Piece from '../Piece/Piece'
 
-const Board = ({ columns, rows, board, playTurn }) => {
-  const getClassNameByFillPlayer = fill_player => {
-    if (fill_player == 0) return style['fill-black']
-    if (fill_player == 1) return style['fill-white']
-    return ''
-  }
-
+const Board = ({ board, playTurn }) => {
   return (
     <div className={style['board']}>
       {board.flat().map(square => (
         <div key={square.id} className={style['square-container']}>
           <div className="circle-bottom-border"></div>
-          <div
-            className={`${style['piece-container']} ${getClassNameByFillPlayer(
-              square.fill_player
-            )}`}
-          ></div>
+          <div className={style['piece-container']}>
+            {square.fill_player != null && (
+              <Piece fillPlayer={square.fill_player}></Piece>
+            )}
+          </div>
           <div className={style['circle-ring']}></div>
           <div
             className={style['square-background']}
